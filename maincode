@@ -1,0 +1,115 @@
+import math as mt
+import numpy as np
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import csv
+import scipy as sp
+
+#三维作图
+locx=[]
+locy=[]
+magx=[]
+magy=[]
+magz=[]
+
+filename='floor4_new_data.csv' 
+with open (filename) as f :
+    reader= csv.reader(f)
+    header_row=next(reader)
+    #print(header_row)
+
+
+    for row in reader:
+        locx.append(int(row[3]))
+        locy.append(int(row[4]))
+        magx.append(np.float(row[5]))
+        magy.append(np.float(row[6]))
+        magz.append(np.float(row[7]))
+#X=np.array(locx)
+#Y=np.array(locy)
+#X,Y=np.meshgrid(X,Y)
+X=locx
+Y=locy
+Z=magy
+Z1=magz
+Z2=magx
+
+ax=plt.subplot(111,projection='3d')
+ax.scatter(X,Y,Z,s=10)
+ax.scatter(X,Y,Z1,s=10)
+ax.scatter(X,Y,Z2,s=10)
+plt.title =('IBSSf4 geomag data blue=mag_y,green=mag_x,orange=mag_z')
+
+#fig=plt.figure()#surface作图尝试失败
+#ax=Axes3D(fig)
+#ax.plot_surface(X,Y,Z2,Z1,rstride=10, cstride=10)
+
+plt.show()
+
+
+#比较作图
+
+lastyearmagx=[]
+lastyearmagy=[]
+lastyearmagz=[]
+thisyearmagx=[]
+thisyearmagy=[]
+thisyearmagz=[]
+x_axis=range(0,306)
+wuchax=[]
+wuchay=[]
+wuchaz=[]
+
+filename='comparedata.csv'
+with open(filename) as f:
+    reader=csv.reader(f)
+    header_row=next(reader)
+    print(header_row)
+
+
+    for row in reader:
+      lastyearmagx.append(float(row[2]))
+      lastyearmagy.append(float(row[3]))
+      lastyearmagz.append(float(row[4]))
+      thisyearmagx.append(float(row[5]))
+      thisyearmagy.append(float(row[6]))
+      thisyearmagz.append(float(row[7]))
+
+
+      differenty=abs((float(row[6])-float(row[3]))/float(row[6]))#误差分析
+      differentz=abs((float(row[7])-float(row[4]))/float(row[7]))
+
+
+      wuchay.append(differenty)
+      wuchaz.append(differentz)
+
+i=0
+sum=0
+j=0
+sum1=0
+for different in wuchay:
+   sum=sum+wuchay[i]
+   i=i+1
+averagey=sum/306
+
+for different in wuchaz:
+   sum1=sum1+wuchaz[j]
+   j=j+1
+averagez=sum1/306
+finalaverge=(abs(averagey)+abs(averagez))/2
+plt.scatter(x_axis,lastyearmagy,c='red',s=10)
+plt.scatter(x_axis,thisyearmagy,c='blue',s=10)
+plt.title("mag_y compare\n red=last year, blue=this year")
+plt.show()
+
+#print(wuchay)
+print(averagey)
+print(averagez)
+print(finalaverge)
+
+
+def main():
+    pass
+
+if __name__ == '__main__':
+    main()
