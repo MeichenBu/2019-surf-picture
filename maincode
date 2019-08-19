@@ -12,7 +12,7 @@ magx=[]
 magy=[]
 magz=[]
 
-filename='floor4_new_data.csv' 
+filename='floor4_new_data.csv'
 with open (filename) as f :
     reader= csv.reader(f)
     header_row=next(reader)
@@ -25,21 +25,23 @@ with open (filename) as f :
         magx.append(np.float(row[5]))
         magy.append(np.float(row[6]))
         magz.append(np.float(row[7]))
-#X=np.array(locx)
-#Y=np.array(locy)
-#X,Y=np.meshgrid(X,Y)
+
 X=locx
 Y=locy
 Z=magy
 Z1=magz
 Z2=magx
 
+
+
 ax=plt.subplot(111,projection='3d')
-ax.scatter(X,Y,Z,s=10)
+ax.scatter(X,Y,Z,s=10,label='magy')
 ax.scatter(X,Y,Z1,s=10)
 ax.scatter(X,Y,Z2,s=10)
-plt.title =('IBSSf4 geomag data blue=mag_y,green=mag_x,orange=mag_z')
-
+ax.set_title ('IBSS floor 4th geomagnetic data measured in 2019 \n blue:Mag_Y,green=Mag_X,orange=Mag_Z')
+ax.set_xlabel('location_X(60cm per unit)')
+ax.set_ylabel('location_Y(60cm per unit)')
+ax.set_zlabel('geomagnetic field intensity(mirco Tesla)')
 #fig=plt.figure()#surface作图尝试失败
 #ax=Axes3D(fig)
 #ax.plot_surface(X,Y,Z2,Z1,rstride=10, cstride=10)
@@ -47,8 +49,9 @@ plt.title =('IBSSf4 geomag data blue=mag_y,green=mag_x,orange=mag_z')
 plt.show()
 
 
-#比较作图
 
+
+#比较作图
 lastyearmagx=[]
 lastyearmagy=[]
 lastyearmagz=[]
@@ -76,7 +79,7 @@ with open(filename) as f:
       thisyearmagz.append(float(row[7]))
 
 
-      differenty=abs((float(row[6])-float(row[3]))/float(row[6]))#误差分析
+      differenty=abs((float(row[6])-float(row[3]))/float(row[6]))
       differentz=abs((float(row[7])-float(row[4]))/float(row[7]))
 
 
@@ -97,12 +100,15 @@ for different in wuchaz:
    j=j+1
 averagez=sum1/306
 finalaverge=(abs(averagey)+abs(averagez))/2
-plt.scatter(x_axis,lastyearmagy,c='red',s=10)
-plt.scatter(x_axis,thisyearmagy,c='blue',s=10)
-plt.title("mag_y compare\n red=last year, blue=this year")
+
+plt.scatter(x_axis,lastyearmagx,c='red',s=5)
+plt.scatter(x_axis,thisyearmagx,c='blue',s=5)
+plt.xlabel('points number(60 cm per unit)')
+plt.ylabel('geomagnetic field intensity (micro Tesla)')
+plt.title("Mag_X comparison\n red points: measured values in 2018(after rotation matrix), blue points:measured values in 2019")
 plt.show()
 
-#print(wuchay)
+
 print(averagey)
 print(averagez)
 print(finalaverge)
